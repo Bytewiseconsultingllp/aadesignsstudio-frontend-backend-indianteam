@@ -26,6 +26,8 @@ import {
 import type { NetworkDetail, NetworkGraphData } from "@/types/collaborative-network"
 import { generateNetworkGraphData } from "@/lib/collaborative-network/fallback-data"
 import { networkFallbackData } from "@/lib/collaborative-network/fallback-data"
+import connectToDatabase from "@/lib/mongodb"
+import memberschema from "@/models/members"
 
 interface CollaborativeNetworkDetailProps {
   networkId?: string
@@ -35,6 +37,13 @@ interface CollaborativeNetworkDetailProps {
   onRefresh?: () => void
   className?: string
 }
+
+// function connect(){
+//   // "use server"
+//   connectToDatabase()
+//   const members =  member.find()
+//   return members as unknown as NetworkDetail
+// }
 
 export function CollaborativeNetworkDetail({
   networkId,
@@ -56,7 +65,11 @@ export function CollaborativeNetworkDetail({
   // Initialize network data
   useEffect(() => {
     // Use provided data or fallback
+    // connectToDatabase()
+    // const member =  memberschema.find() as unknown as NetworkDetail
+    // const data = networkData || member == null ? networkFallbackData : member
     const data = networkData || networkFallbackData
+    // console.log(data)
     setNetwork(data)
 
     // Generate graph data

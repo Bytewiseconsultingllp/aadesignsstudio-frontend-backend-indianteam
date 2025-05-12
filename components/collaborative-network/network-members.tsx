@@ -3,13 +3,15 @@
 import { useState } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search, Filter, ChevronDown, X } from "lucide-react"
+import { Search, Filter, ChevronDown, X, Network } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import type { NetworkMember } from "@/types/collaborative-network"
+import { MemberForm } from "./network-member-form"
+import Link from "next/link"
 
 interface NetworkMembersProps {
   members: NetworkMember[]
@@ -63,7 +65,7 @@ export function NetworkMembers({ members, onMemberClick, className = "" }: Netwo
 
   return (
     <div className={`network-members ${className}`}>
-      <Card>
+      <Card>f
         <CardHeader className="pb-3">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -83,9 +85,23 @@ export function NetworkMembers({ members, onMemberClick, className = "" }: Netwo
                   className="pl-9 w-full sm:w-[200px]"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                />  
               </div>
 
+              {/* Add */}
+              
+              <div className="relative">
+                <Link href="/collabNetwork/add">
+                  <Button variant="outline" className="flex items-center gap-1">
+                    {"ADD Member"}
+                  </Button>
+                </Link>
+              </div>
+
+              {/* if (true) {
+                console.log("something")
+              } */}
+              
               {/* Department filter */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -149,11 +165,12 @@ export function NetworkMembers({ members, onMemberClick, className = "" }: Netwo
             </div>
           )}
         </CardHeader>
-
-        <CardContent>
+        
+        
+          <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence>
-              {sortedMembers.map((member, index) => (
+              {sortedMembers?.map((member, index) => (
                 <motion.div
                   key={member.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -163,18 +180,21 @@ export function NetworkMembers({ members, onMemberClick, className = "" }: Netwo
                   onClick={() => onMemberClick && onMemberClick(member.id)}
                   className="cursor-pointer"
                 >
-                  <MemberCard member={member} />
+                  <Link href={`/collabNetwork/${member.id}`}>
+                    <MemberCard member={member} />
+                  </Link>
                 </motion.div>
               ))}
             </AnimatePresence>
 
-            {sortedMembers.length === 0 && (
+            {sortedMembers?.length === 0 && (
               <div className="col-span-full py-8 text-center text-gray-500">
                 No members match your filters. Try adjusting your search criteria.
               </div>
             )}
           </div>
-        </CardContent>
+    </CardContent>
+        
       </Card>
     </div>
   )
@@ -185,6 +205,8 @@ interface MemberCardProps {
 }
 
 function MemberCard({ member }: MemberCardProps) {
+    // connectToDatabase()
+    // member = memberschema == null ? member : memberschema.find() as unknown as NetworkMember
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
       <div className="p-4">
@@ -270,4 +292,15 @@ function MemberCard({ member }: MemberCardProps) {
       </div>
     </div>
   )
+}
+
+
+
+function AddMember(isActive = false){
+  console.log(isActive)
+  if(isActive){
+    return(
+    <div>adding members</div>
+    )
+  }
 }

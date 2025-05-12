@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 // Use the environment variable directly
-const MONGODB_URI = process.env.MONGODB_URI
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://admin:admin@ecommerce.mpshi.mongodb.net/finallandscaping?retryWrites=true&w=majority&appName=ECOMMERCE"
 
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable")
@@ -14,6 +14,7 @@ if (!cached) {
 }
 
 async function connectToDatabase() {
+  console.log("mongodb uri-------" +MONGODB_URI)
   if (cached.conn) {
     return cached.conn
   }
